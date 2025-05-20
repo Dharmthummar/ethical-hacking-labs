@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethical Hacking Labs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #0f0;
+            --secondary-color: #00b33c;
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --card-border: #222;
+            --highlight: #ff3e3e;
+            --accent-color: #00c3ff;
+            --gold: #ffd700;
+            --neon-blue: #00bfff;
+            --neon-pink: #ff6ec7;
+            --neon-purple: #bf00ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Matrix animation background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            position: relative;
+            border-bottom: 1px solid var(--secondary-color);
+            margin-bottom: 30px;
+            background-color: rgba(10, 10, 10, 0.6);
+            border-radius: 8px;
+        }
+        
+        /* Circular logo */
+        .logo-container {
+            justify-content: left;
+            align-items: center;
+            margin-bottom: 15px;
+            margin-left: 25px;
+        }
+        
+        .circular-logo {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--bg-color);
+            margin-right: 15px;
+            box-shadow: 0 0 15px var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .circular-logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+            top: 0;
+            left: -100%;
+            animation: shine 3s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        
+        .glitch-effect {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .glitch-effect::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--highlight);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch-effect::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--secondary-color);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            5% { clip: rect(12px, 9999px, 59px, 0); }
+            10% { clip: rect(48px, 9999px, 29px, 0); }
+            15% { clip: rect(42px, 9999px, 73px, 0); }
+            20% { clip: rect(63px, 9999px, 27px, 0); }
+            25% { clip: rect(34px, 9999px, 55px, 0); }
+            30% { clip: rect(86px, 9999px, 73px, 0); }
+            35% { clip: rect(20px, 9999px, 20px, 0); }
+            40% { clip: rect(26px, 9999px, 60px, 0); }
+            45% { clip: rect(25px, 9999px, 66px, 0); }
+            50% { clip: rect(57px, 9999px, 98px, 0); }
+            55% { clip: rect(5px, 9999px, 46px, 0); }
+            60% { clip: rect(82px, 9999px, 31px, 0); }
+            65% { clip: rect(54px, 9999px, 27px, 0); }
+            70% { clip: rect(28px, 9999px, 99px, 0); }
+            75% { clip: rect(45px, 9999px, 69px, 0); }
+            80% { clip: rect(23px, 9999px, 85px, 0); }
+            85% { clip: rect(54px, 9999px, 84px, 0); }
+            90% { clip: rect(45px, 9999px, 47px, 0); }
+            95% { clip: rect(37px, 9999px, 20px, 0); }
+            100% { clip: rect(4px, 9999px, 91px, 0); }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            5% { clip: rect(52px, 9999px, 74px, 0); }
+            10% { clip: rect(79px, 9999px, 85px, 0); }
+            15% { clip: rect(75px, 9999px, 5px, 0); }
+            20% { clip: rect(67px, 9999px, 61px, 0); }
+            25% { clip: rect(14px, 9999px, 79px, 0); }
+            30% { clip: rect(1px, 9999px, 66px, 0); }
+            35% { clip: rect(86px, 9999px, 30px, 0); }
+            40% { clip: rect(23px, 9999px, 98px, 0); }
+            45% { clip: rect(85px, 9999px, 72px, 0); }
+            50% { clip: rect(71px, 9999px, 75px, 0); }
+            55% { clip: rect(2px, 9999px, 48px, 0); }
+            60% { clip: rect(30px, 9999px, 16px, 0); }
+            65% { clip: rect(59px, 9999px, 50px, 0); }
+            70% { clip: rect(41px, 9999px, 62px, 0); }
+            75% { clip: rect(2px, 9999px, 82px, 0); }
+            80% { clip: rect(47px, 9999px, 73px, 0); }
+            85% { clip: rect(3px, 9999px, 27px, 0); }
+            90% { clip: rect(26px, 9999px, 55px, 0); }
+            95% { clip: rect(42px, 9999px, 97px, 0); }
+            100% { clip: rect(38px, 9999px, 49px, 0); }
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(10, 10, 10, 0.8);
+            padding: 10px 0;
+            backdrop-filter: blur(5px);
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+            pointer-events: none;
+        }
+        
+        nav a:hover::before {
+            width: 100%;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(17, 17, 17, 0.6);
+            border: 1px solid var(--card-border);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .intro h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .intro p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .warning {
+            background-color: rgba(255, 62, 62, 0.2);
+            border-left: 4px solid var(--highlight);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning h3 {
+            color: var(--highlight);
+            margin-bottom: 10px;
+        }
+        
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .lab-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .lab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .lab-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 65%, var(--primary-color) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .lab-card:hover::before {
+            opacity: 0.2;
+        }
+        
+        .lab-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+        }
+        
+        .lab-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        
+        .lab-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .lab-description {
+            padding: 15px;
+        }
+        
+        .lab-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .lab-tag {
+            background-color: rgba(0, 255, 0, 0.2);
+            color: var(--primary-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .lab-actions {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid var(--card-border);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .lab-btn {
+            flex: 1;
+            padding: 8px 15px;
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+        }
+        
+        .lab-btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+        
+        .lab-btn:first-child {
+            margin-right: 10px;
+        }
+        
+        .command-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(17, 17, 17, 0.7);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .command-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .command-box {
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .command-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+        }
+        
+        .command-text {
+            font-family: 'Courier New', monospace;
+            color: #ddd;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .command-description {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .fact-box {
+            background-color: rgba(0, 179, 60, 0.2);
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .fact-box h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .pdf-viewer-container {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(17, 17, 17, 0.7);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            animation: fadeInUp 0.5s ease-out;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pdf-viewer-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 65%, var(--primary-color) 100%);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .pdf-viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+        }
+        
+        .pdf-viewer-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px var(--primary-color);
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            }
+        }
+        
+        .close-pdf {
+            background-color: transparent;
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-pdf:hover {
+            color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .pdf-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid var(--card-border);
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .pdf-container:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        }
+        
+        .pdf-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border-radius: 4px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .pdf-control-btn {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .pdf-control-btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+        }
+        
+        .pdf-page-info {
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pdf-page-input {
+            width: 50px;
+            background-color: rgba(26, 26, 26, 0.8);
+            border: 1px solid var(--secondary-color);
+            color: var(--text-color);
+            padding: 5px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            margin-top: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: pulse-progress 1.5s infinite;
+        }
+        
+        @keyframes pulse-progress {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid var(--card-border);
+            font-size: 0.9rem;
+            color: #888;
+            background-color: rgba(10, 10, 10, 0.6);
+            border-radius: 8px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Typing animation */
+        .typing-animation {
+            overflow: hidden;
+            border-right: 2px solid var(--primary-color);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 2px;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color) }
+        }
+        
+        /* Floating animation for cards */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Pulse animation for buttons */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+        }
+        
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Fade in up animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Floating button */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Theme switcher */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-btn {
+            background-color: transparent;
+            border: 1px solid var(--secondary-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--bg-color);
+        }
+        
+        /* Dark theme (default) */
+        .dark-theme {
+            --primary-color: #0f0;
+            --secondary-color: #00b33c;
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --card-border: #222;
+        }
+        
+        /* Hacker theme */
+        .hacker-theme {
+            --primary-color: #0f0;
+            --secondary-color: #00b33c;
+            --bg-color: #000;
+            --text-color: #0f0;
+            --card-bg: rgba(17, 17, 17, 0.7);
+            --card-border: #0f0;
+        }
+        
+        /* Mr. Robot theme */
+        .mrrobot-theme {
+            --primary-color: #ff3e3e;
+            --secondary-color: #cc0000;
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: rgba(34, 34, 34, 0.7);
+            --card-border: #333;
+        }
+        
+        /* Matrix theme */
+        .matrix-theme {
+            --primary-color: #00ff00;
+            --secondary-color: #008800;
+            --bg-color: #000;
+            --text-color: #00ff00;
+            --card-bg: rgba(0, 20, 0, 0.7);
+            --card-border: #004400;
+        }
+        
+        /* Tron theme */
+        .tron-theme {
+            --primary-color: #00bfff;
+            --secondary-color: #0088cc;
+            --bg-color: #000;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(0, 20, 40, 0.7);
+            --card-border: #004466;
+        }
+        
+        /* Blade Runner theme */
+        .bladerunner-theme {
+            --primary-color: #ff6ec7;
+            --secondary-color: #cc5ba3;
+            --bg-color: #120b1e;
+            --text-color: #e0e0e0;
+            --card-bg: rgba(30, 20, 40, 0.7);
+            --card-border: #442244;
+        }
+        
+        /* Special text colors */
+        .neon-text {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+        }
+        
+        .neon-text-pink {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink);
+        }
+        
+        .neon-text-purple {
+            color: var(--neon-purple);
+            text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+        }
+        
+        .gold-text {
+            color: var(--gold);
+            text-shadow: 0 0 5px var(--gold), 0 0 10px var(--gold);
+        }
+        
+        /* Concept info boxes */
+        .concept-box {
+            background-color: rgba(0, 100, 0, 0.2);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .concept-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .concept-box p {
+            margin-bottom: 10px;
+        }
+        
+        .concept-box ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .labs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <canvas class="matrix-bg" id="matrix"></canvas>
+    
+    <div class="theme-switcher">
+        <button class="theme-btn" id="theme-toggle">
+            <i class="fas fa-adjust"></i> Theme
+        </button>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="circular-logo">E</div>
+                <div class="logo">
+                    <span class="glitch-effect" data-text="ETHICAL HACKING LABS">ETHICAL HACKING LABS</span>
+                </div>
+            </div>
+            <div class="tagline typing-animation">By @dharmthummar</div>
+            <nav>
+                <a href="#home"><i class="fas fa-home"></i> Home</a>
+                <a href="#labs"><i class="fas fa-flask"></i> Labs</a>
+                <a href="#resources"><i class="fas fa-book"></i> Resources</a>
+                <a href="#about"><i class="fas fa-info-circle"></i> About</a>
+                <a href="https://github.com/dharmthummar/ethical-hacking-labs" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </nav>
+        </header>
+        
+        <section class="intro animate__animated animate__fadeIn" id="home">
+            <h2>Welcome to <span class="neon-text">EHL</span></h2>
+            <p>It hosts a series of practical assignments in PDF format, covering essential topics such as setting up a lab environment with Kali Linux, using network diagnostic tools, performing network scanning with Nmap, scripting for enumeration, executing SQL injection attacks, and exploring Windows privilege escalation. These tutorials are designed to provide step-by-step guidance, complete with code snippets and outputs, to help learners build practical skills in a controlled and ethical manner.</p>
+            
+            <div class="warning">
+                <h3><i class="fas fa-exclamation-triangle"></i> Important Disclaimer</h3>
+                <p>The techniques demonstrated in these labs are for educational purposes only. Always practice ethical hacking with proper authorization. Unauthorized hacking is illegal and unethical. By using these materials, you agree to use this knowledge responsibly and legally.</p>
+            </div>
+            
+            <div class="concept-box">
+                <h3><i class="fas fa-lightbulb"></i> What is Ethical Hacking?</h3>
+                <p>Ethical hacking involves legally breaking into computers and devices to test an organization's defenses. It's among the most exciting IT jobs any person can have. You are literally getting paid to keep up with the latest technology and break into computers without getting arrested.</p>
+                <p>Unlike malicious hackers, ethical hackers:</p>
+                <ul>
+                    <li>Obtain proper authorization before testing systems</li>
+                    <li>Respect privacy and data integrity</li>
+                    <li>Report all vulnerabilities discovered</li>
+                    <li>Help strengthen security posture rather than exploit it</li>
+                    <li>Follow a structured methodology and maintain documentation</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="labs">
+            <h2 style="color: var(--primary-color); margin-bottom: 20px;" class="animate__animated animate__fadeIn">Practical <span class="gold-text">Labs</span></h2>
+            
+            <div class="labs-grid">
+                <!-- Lab 1 -->
+                <div class="lab-card" style="animation-delay: 0.1s">
+                    <div class="lab-header">
+                        <div class="lab-number">1</div>
+                        <h3 class="lab-title">Fundamentals of Ethical Hacking</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Explore the core principles, methodologies, and legal frameworks that govern ethical hacking practices.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">Basics</span>
+                            <span class="lab-tag">kali</span>
+                            <span class="lab-tag">Phishing</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p1.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="1">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 2 -->
+                <div class="lab-card" style="animation-delay: 0.2s">
+                    <div class="lab-header">
+                        <div class="lab-number">2</div>
+                        <h3 class="lab-title">Advanced Reconnaissance Techniques</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Master the art of gathering intelligence on target systems using passive and active reconnaissance methods.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">OSINT</span>
+                            <span class="lab-tag">Footprinting</span>
+                            <span class="lab-tag">Information Gathering</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p2.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="2">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 3 -->
+                <div class="lab-card" style="animation-delay: 0.3s">
+                    <div class="lab-header">
+                        <div class="lab-number">3</div>
+                        <h3 class="lab-title">Network Scanning & Enumeration</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Learn comprehensive techniques for mapping networks, identifying live hosts, open ports, and running services.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">Nmap</span>
+                            <span class="lab-tag">Port Scanning</span>
+                            <span class="lab-tag">Service Detection</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p3.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="3">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 4 -->
+                <div class="lab-card" style="animation-delay: 0.4s">
+                    <div class="lab-header">
+                        <div class="lab-number">4</div>
+                        <h3 class="lab-title">Service & Resource Enumeration</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Discover methodologies for extracting valuable information from network services to identify potential attack vectors.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">SNMP</span>
+                            <span class="lab-tag">NetBIOS</span>
+                            <span class="lab-tag">SMB</span>
+                            <span class="lab-tag">NTP</span>
+                            <span class="lab-tag">LDAP-Active Directory</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p4.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="4">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 5 -->
+                <div class="lab-card" style="animation-delay: 0.5s">
+                    <div class="lab-header">
+                        <div class="lab-number">5</div>
+                        <h3 class="lab-title">Network Hacking</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Learn systematic approaches to identify, classify, and prioritize security vulnerabilities in target systems.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">WiFi Hacking</span>
+                            <span class="lab-tag">Vulnerability Scanning</span>
+                            <span class="lab-tag">Risk Assessment</span>
+                            <span class="lab-tag">Exploitation</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p5.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="5">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 6 -->
+                <div class="lab-card" style="animation-delay: 0.6s">
+                    <div class="lab-header">
+                        <div class="lab-number">6</div>
+                        <h3 class="lab-title neon-text-pink">Advanced System Penetration</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Exploit vsftpd,Apache tomcat and 
+                            vns  with 
+                            Metasploit Master techniques for gaining and maintaining access to target systems through various attack vectors.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">Password Cracking</span>
+                            <span class="lab-tag">Privilege Escalation</span>
+                            <span class="lab-tag">Persistence</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p6.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="6">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 7 -->
+                <div class="lab-card" style="animation-delay: 0.7s">
+                    <div class="lab-header">
+                        <div class="lab-number">7</div>
+                        <h3 class="lab-title neon-text">SQL Injections & Reverse Engineering</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Analyze malicious software to understand its functionality, behavior patterns, and potential countermeasures.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">XSS- cross site script</span>
+                            <span class="lab-tag">sqlmap</span>
+                            <span class="lab-tag">Reverse Engineering</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p7.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="7">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 8 -->
+                <div class="lab-card" style="animation-delay: 0.8s">
+                    <div class="lab-header">
+                        <div class="lab-number">8</div>
+                        <h3 class="lab-title gold-text">Network Traffic Analysis & Interception</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Develop skills in capturing, analyzing, and interpreting network traffic to extract sensitive information.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">Wireshark</span>
+                            <span class="lab-tag">Packet Analysis</span>
+                            <span class="lab-tag">Man-in-the-Middle</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p8.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="8">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Lab 9 -->
+                <div class="lab-card" style="animation-delay: 0.9s">
+                    <div class="lab-header">
+                        <div class="lab-number">9</div>
+                        <h3 class="lab-title neon-text-purple">vulnerability assessment tools for prepare study</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Explore open ports networks settings which used to breach security using tools for prepare documentation.</p>
+                        <div class="lab-tags">
+                            <span class="lab-tag">Nessus</span>
+                            <span class="lab-tag">Nmap</span>
+                            <span class="lab-tag">SQLmap</span>
+                        </div>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn" data-pdf="dharmthummar_EHL_p9.pdf">
+                            <i class="fas fa-flask"></i> Open Lab
+                        </button>
+                        <button class="lab-btn" data-commands="9">
+                            <i class="fas fa-terminal"></i> Commands
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PDF Viewer Section -->
+        <section id="pdf-viewer-container" class="pdf-viewer-container">
+            <div class="pdf-viewer-header">
+                <h3 class="pdf-viewer-title" id="pdf-viewer-title">Lab Documentation</h3>
+                <button class="close-pdf" id="close-pdf-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <iframe id="pdf-viewer-frame" class="pdf-container" src="" frameborder="0"></iframe>
+            
+            <div class="pdf-controls">
+                <button class="pdf-control-btn" id="prev-page">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                
+                <div class="pdf-page-info">
+                    Page <input type="number" class="pdf-page-input" id="current-page" value="1" min="1"> of <span id="total-pages">--</span>
+                </div>
+                
+                <button class="pdf-control-btn" id="next-page">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                
+                <button class="pdf-control-btn" id="zoom-in">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+                
+                <button class="pdf-control-btn" id="zoom-out">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                
+                <button class="pdf-control-btn" id="download-pdf">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="pdf-progress"></div>
+            </div>
+        </section>
+        
+        <section id="commands-container" style="display: none;">
+            <div class="command-section">
+                <h3 class="command-title" id="commands-title">Command Reference</h3>
+                <div id="commands-content">
+                    <!-- Commands will be loaded here dynamically -->
+                </div>
+                
+                <div class="fact-box">
+                    <h3><i class="fas fa-lightbulb"></i> Cybersecurity Insight</h3>
+                    <p id="fact-content">The first documented computer worm, the Morris Worm, was released in 1988 by Robert Tappan Morris. It affected approximately 10% of all computers connected to the internet at that time (about 6,000 machines).</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="resources">
+            <h2 style="color: var(--primary-color); margin: 40px 0 20px;" class="animate__animated animate__fadeIn">Additional <span class="neon-text-purple">Resources</span></h2>
+            
+            <div class="labs-grid">
+                <div class="lab-card" style="animation-delay: 0.1s">
+                    <div class="lab-header">
+                        <h3 class="lab-title neon-text">Essential Cybersecurity Tools</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>A comprehensive collection of industry-standard tools for penetration testing, vulnerability assessment, and security analysis.</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Kali Linux & Parrot OS</li>
+                            <li>Metasploit Framework</li>
+                            <li>Burp Suite & OWASP ZAP</li>
+                            <li>Wireshark & Tcpdump</li>
+                            <li>John the Ripper & Hashcat</li>
+                        </ul>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn resource-btn" data-resource="tools">
+                            <i class="fas fa-tools"></i> Explore Tools
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lab-card" style="animation-delay: 0.2s">
+                    <div class="lab-header">
+                        <h3 class="lab-title gold-text">Certification Pathways</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Structured learning paths to help you prepare for industry-recognized cybersecurity certifications.</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>CompTIA Security+</li>
+                            <li>CEH (Certified Ethical Hacker)</li>
+                            <li>OSCP (Offensive Security Certified Professional)</li>
+                            <li>CISSP (Certified Information Systems Security Professional)</li>
+                            <li>CISM (Certified Information Security Manager)</li>
+                        </ul>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn resource-btn" data-resource="paths">
+                            <i class="fas fa-road"></i> View Pathways
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lab-card" style="animation-delay: 0.3s">
+                    <div class="lab-header">
+                        <h3 class="lab-title neon-text-pink">Threat Intelligence</h3>
+                    </div>
+                    <div class="lab-description">
+                        <p>Stay updated with the latest cybersecurity threats, vulnerabilities, and emerging attack vectors.</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>CVE Database & MITRE ATT&CK Framework</li>
+                            <li>Threat Intelligence Platforms</li>
+                            <li>Security Bulletins & Advisories</li>
+                            <li>Malware Analysis Reports</li>
+                            <li>Industry Security Trends</li>
+                        </ul>
+                    </div>
+                    <div class="lab-actions">
+                        <button class="lab-btn resource-btn" data-resource="intel">
+                            <i class="fas fa-shield-alt"></i> Access Intel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="about">
+            <h2 style="color: var(--primary-color); margin: 40px 0 20px;" class="animate__animated animate__fadeIn">About This <span class="gold-text">Project</span></h2>
+            
+            <div class="intro">
+                <p>This ethical hacking labs guide is designed to provide hands-on experience for beginners in the field of cybersecurity. All materials are for educational purposes only.
+
+                    Remember that ethical hacking involves obtaining proper authorization before testing security measures. Always practice responsible disclosure of vulnerabilities.</p>
+                
+                
+                
+            </div>
+        </section>
+        
+        <footer>
+            <p>&copy; 2023 Ethical Hacking Labs | For Educational Purposes Only</p>
+            <div class="social-links">
+                <a href="https://github.com/dharmthummar" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/dharmthummar" target="_blank" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/dharmthummar" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://www.instagram.com/dharm_1602" target="_blank" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Floating button for quick navigation -->
+    <div class="floating-btn" id="scroll-top-btn">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script>
+        // Matrix background animation
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = ' DHARM THUMMAR 1602 ';
+        const latin = 'DHARM';
+        const nums = 'THUMMAR';
+        const hack = '1602';
+        
+        const alphabet = hack + nums;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // PDF Viewer functions
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.0;
+        
+        function openPdfViewer(title, pdfFile) {
+            document.getElementById('pdf-viewer-title').textContent = title;
+            document.getElementById('pdf-viewer-frame').src = pdfFile;
+            document.getElementById('pdf-viewer-container').style.display = 'block';
+            document.getElementById('pdf-viewer-container').classList.add('animate__animated', 'animate__fadeInUp');
+            
+            // Scroll to PDF viewer
+            document.getElementById('pdf-viewer-container').scrollIntoView({ behavior: 'smooth' });
+            
+            // Simulate loading progress
+            simulateProgress();
+            
+            // Set download link
+            document.getElementById('download-pdf').setAttribute('data-pdf', pdfFile);
+            
+            // Reset page number
+            document.getElementById('current-page').value = 1;
+            document.getElementById('total-pages').textContent = '--';
+            
+            // Simulate total pages (in a real app, this would come from the PDF.js library)
+            setTimeout(() => {
+                const randomPages = Math.floor(Math.random() * 30) + 10;
+                document.getElementById('total-pages').textContent = randomPages;
+            }, 2000);
+        }
+        
+        function closePdfViewer() {
+            document.getElementById('pdf-viewer-container').classList.add('animate__animated', 'animate__fadeOutDown');
+            
+            setTimeout(() => {
+                document.getElementById('pdf-viewer-container').style.display = 'none';
+                document.getElementById('pdf-viewer-container').classList.remove('animate__animated', 'animate__fadeOutDown', 'animate__fadeInUp');
+                document.getElementById('pdf-viewer-frame').src = '';
+            }, 500);
+        }
+        
+        function simulateProgress() {
+            const progressBar = document.getElementById('pdf-progress');
+            progressBar.style.width = '0%';
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width += Math.random() * 10;
+                    if (width > 100) width = 100;
+                    progressBar.style.width = width + '%';
+                }
+            }, 200);
+        }
+        
+        // Commands section
+        const commandsData = {
+            1: [
+                {
+                    cmd: "help",
+                    desc: "Displays a list of available commands and their basic usage"
+                },
+                {
+                    cmd: "whoami",
+                    desc: "Displays the current user context the terminal is running under"
+                },
+                {
+                    cmd: "systeminfo",
+                    desc: "Provides detailed configuration information about the computer system"
+                },
+                {
+                    cmd: "netstat -ano",
+                    desc: "Displays active network connections and listening ports with process IDs"
+                },
+                {
+                    cmd: "ipconfig /all",
+                    desc: "Shows detailed network configuration for all adapters"
+                }
+            ],
+            2: [
+        {
+            cmd: "ping",
+            desc: "Checks if another computer on the network is connected or not by sending data packets"
+        },
+        {
+            cmd: "ipconfig/ifconfig",
+            desc: "Shows network settings and IP addresses of computer and internet configuration of our system"
+        },
+        {
+            cmd: "netstat",
+            desc: "Displays network connections and statistics"
+        },
+        {
+            cmd: "traceroute/tracert",
+            desc: "Shows the path the data packets takes from your computer to another computer on the network"
+        },
+        {
+            cmd: "route",
+            desc: "Shows routing table and used for making changes in the network routing table"
+        },
+        {
+            cmd: "nslookup",
+            desc: "Used to get IP address of specified domain name server"
+        },
+        {
+            cmd: "hostname",
+            desc: "Displays or sets the name of your computer on the network"
+        },
+        {
+            cmd: "dig",
+            desc: "Similar to nslookup command, used to get information about DNS"
+        },
+        {
+            cmd: "telnet",
+            desc: "Used for establishing remote connection between two systems"
+        },
+        {
+            cmd: "ssh",
+            desc: "Connects to another computer over the network using the Secure Shell"
+        },
+        {
+            cmd: "arp",
+            desc: "Address resolution protocol - ARP cache stores IP addresses and their resolved physical addresses"
+        }
+    ],
+
+            3: [
+                {
+                    cmd: "nmap -sS -p 1-1000 192.168.1.1",
+                    desc: "Performs a SYN scan on ports 1-1000 to identify open services while minimizing detection"
+                },
+                {
+                    cmd: "nmap -sV -O --osscan-guess 192.168.1.1",
+                    desc: "Detects service versions and operating system with aggressive OS detection"
+                },
+                {
+                    cmd: "nmap -A -T4 -v 192.168.1.0/24",
+                    desc: "Aggressive scan of entire subnet with OS detection, version scanning, script scanning, and traceroute"
+                },
+                {
+                    cmd: "masscan -p1-65535 192.168.1.0/24 --rate=1000",
+                    desc: "Rapidly scans entire network for all TCP ports at 1000 packets per second"
+                },
+                {
+                    cmd: "unicornscan -mT 192.168.1.0/24:1-65535",
+                    desc: "Performs efficient TCP port scanning with asynchronous stateless design"
+                }
+            ],
+            4: [
+                {
+                    cmd: "enum4linux -a 192.168.1.1",
+                    desc: "Comprehensive tool for enumerating information from Windows and Samba systems"
+                },
+                {
+                    cmd: "smbclient -L //192.168.1.1 -N",
+                    desc: "Lists SMB shares available on target system without requiring a password"
+                },
+                {
+                    cmd: "snmpwalk -c public -v1 192.168.1.1",
+                    desc: "Retrieves all SNMP information from target using public community string"
+                },
+                {
+                    cmd: "ldapsearch -x -h 192.168.1.1 -b \"DC=example,DC=com\"",
+                    desc: "Performs anonymous LDAP query against domain controller"
+                },
+                {
+                    cmd: "rpcclient -U \"\" -N 192.168.1.1",
+                    desc: "Connects to RPC service on target for enumeration with null session"
+                }
+            ],
+            5: [
+        {
+            cmd: "airodump-ng",
+            desc: "Packet sniffing tool for wireless networks showing ESSIDs, BSSIDs, signal strength"
+        },
+        {
+            cmd: "airodump-ng --band a wlan0",
+            desc: "Listen to 5GHz wireless frequencies"
+        },
+        {
+            cmd: "airodump-ng --band abg wlan0",
+            desc: "Listen to all wireless frequencies (a, b, g bands)"
+        },
+        {
+            cmd: "airodump-ng --bssid {MAC} --ch {CHANNEL} wlan0",
+            desc: "Target specific wireless network for packet sniffing"
+        },
+        {
+            cmd: "aireplay-ng --deauth 100 -a [AP-MAC] -c [CLIENT-MAC] wlan0 -D",
+            desc: "Deauthentication attack to disconnect clients from wireless networks"
+        },
+        {
+            cmd: "aireplay-ng --fakeauth 0 -a [AP-MAC] -h [HOST-MAC] wlan0",
+            desc: "Fake authentication with wireless access point"
+        },
+        {
+            cmd: "crunch [min] [max] [characters] -t [pattern] -o [filename]",
+            desc: "Create wordlist with specific patterns for password cracking"
+        },
+        {
+            cmd: "aircrack-ng handshakefile -w wordlist",
+            desc: "Crack captured WPA/WPA2 handshakes using specified wordlist"
+        }
+    ],
+    6: [
+        {
+            cmd: "msfconsole",
+            desc: "Launches the Metasploit Framework console for exploitation"
+        },
+        {
+            cmd: "search eternal",
+            desc: "Search for EternalBlue exploit within Metasploit Framework"
+        },
+        {
+            cmd: "set RHOSTS [target-ip]",
+            desc: "Set the target host IP address in Metasploit"
+        },
+        {
+            cmd: "set LHOST [attacker-ip]",
+            desc: "Set the local host (attacker) IP address in Metasploit"
+        },
+        {
+            cmd: "run",
+            desc: "Execute the configured exploit in Metasploit"
+        }
+    ],
+            7: [
+                {
+            cmd: "sqlmap -u [URL] -dbs",
+            desc: "Basic SQLMap command to identify databases through SQL injection"
+        },
+        {
+            cmd: "sqlmap -u [URL] -p <params> -dbs",
+            desc: "Target a specific parameter for SQL injection testing"
+        },
+        {
+            cmd: "sqlmap -u [URL] -D <db_name> --tables",
+            desc: "List all tables in a particular database after identifying vulnerability"
+        },
+        {
+            cmd: "sqlmap -u [URL] -D <db_name> -T <table_name> --columns",
+            desc: "List columns in a specific table of an identified database"
+        },
+        {
+            cmd: "sqlmap -u [URL] -D <db_name> -T <table_name> --dump",
+            desc: "Dump data from a table in an identified database"
+        },
+        {
+            cmd: "sqlmap -u [URL] -D <db_name> -T <table_name> -C <column_names> --dump",
+            desc: "Extract specific columns like usernames and passwords from a table"
+        },
+        {
+            cmd: "sqlmap -u [URL] --fingerprint",
+            desc: "Detect DBMS information through SQL injection"
+        },
+        {
+            cmd: "sqlmap -u [URL] --random-agent --dbs",
+            desc: "Bypass WAF (Web Application Firewall) using random user agent"
+        }
+            ],
+            8: [
+        {
+            cmd: "msfconsole",
+            desc: "Launch MSF console"
+        },
+        {
+            cmd: "search eternal",
+            desc: "Search for eternal blue exploit"
+        },
+        {
+            cmd: "set RHOSTS 192.168.xxx.xxx",
+            desc: "Set remote host to Windows 7 machine"
+        },
+        {
+            cmd: "set LHOST 192.168.xxx.xxx",
+            desc: "Set local host to Kali machine IP"
+        },
+        {
+            cmd: "run",
+            desc: "Execute the exploit"
+        }
+    ],
+            9: [
+        {
+            cmd: "nessus -c nessus.conf",
+            desc: "Launch Nessus vulnerability scanner with specified configuration file"
+        },
+        {
+            cmd: "nmap -sn 192.168.1.0/24",
+            desc: "Identify all active hosts on a local network using Nmap"
+        },
+        {
+            cmd: "nmap -sS -p 1-1000 192.168.1.1",
+            desc: "Detect open TCP ports on a remote server using a SYN scan"
+        },
+        {
+            cmd: "nmap -sV 192.168.1.1",
+            desc: "Determine the versions of services running on open ports of a target host"
+        },
+        {
+            cmd: "nmap -O 192.168.1.1",
+            desc: "Perform OS detection to identify the operating system of a network device"
+        },
+        {
+            cmd: "nmap -A 192.168.1.1",
+            desc: "Conduct an aggressive scan to gather comprehensive information about a target system"
+        },
+        {
+            cmd: "nmap -sU 192.168.1.1",
+            desc: "Scan for open UDP ports on a given host to identify active UDP services"
+        },
+        {
+            cmd: "nmap --script vuln 192.168.1.1",
+            desc: "Detect potential vulnerabilities by running Nmap's vulnerability scanning scripts"
+        },
+        {
+            cmd: "sqlmap -u http://testphp.vulnweb.com/listproducts.php?cat=1 --dbs",
+            desc: "Scan a website for SQL injection vulnerabilities and list available databases"
+        }
+    ]
+        };
+        
+        function showCommands(labNumber) {
+            const commandsContainer = document.getElementById('commands-container');
+            const commandsTitle = document.getElementById('commands-title');
+            const commandsContent = document.getElementById('commands-content');
+            
+            // Clear previous content
+            commandsContent.innerHTML = '';
+            
+            // Set title based on lab number
+            const labTitles = [
+                "Fundamentals of Ethical Hacking",
+                "Advanced Reconnaissance Techniques",
+                "Network Scanning & Enumeration",
+                "Service & Resource Enumeration",
+                "Network Hacking / Wireless Attacks",
+                "Advanced System Penetration",
+                "SQL Injections & XSS Attacks",
+                "Windows Privilege Escalation",
+                "Vulnerability Assessment Tools"
+            ];
+            
+            commandsTitle.textContent = `Command Reference: ${labTitles[labNumber-1]}`;
+            
+            // Get commands for this lab
+            const commands = commandsData[labNumber];
+            
+            if (commands) {
+                commands.forEach(cmd => {
+                    const commandBox = document.createElement('div');
+                    commandBox.className = 'command-box';
+                    
+                    const commandText = document.createElement('div');
+                    commandText.className = 'command-text';
+                    commandText.textContent = cmd.cmd;
+                    
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                    copyBtn.setAttribute('data-command', cmd.cmd);
+                    
+                    const commandDesc = document.createElement('div');
+                    commandDesc.className = 'command-description';
+                    commandDesc.textContent = cmd.desc;
+                    
+                    commandBox.appendChild(commandText);
+                    commandBox.appendChild(copyBtn);
+                    commandBox.appendChild(commandDesc);
+                    
+                    commandsContent.appendChild(commandBox);
+                });
+                
+                // Show random fact
+                const facts = [
+                    "The first documented computer worm, the Morris Worm, was released in 1988 by Robert Tappan Morris. It affected approximately 10% of all computers connected to the internet at that time (about 6,000 machines).",
+                    "The term 'bug' to describe a computer glitch originated in 1947 when Grace Hopper found a moth trapped in a relay of the Harvard Mark II computer, causing it to malfunction.",
+                    "The largest DDoS attack ever recorded peaked at 2.54 Tbps and was mitigated by AWS in February 2020.",
+                    "The Stuxnet worm, discovered in 2010, was specifically designed to target industrial control systems and is believed to have damaged Iran's nuclear program.",
+                    "The average cost of a data breach in 2023 is $4.45 million, a 15% increase over 3 years according to IBM's Cost of a Data Breach Report.",
+                    "Approximately 95% of cybersecurity breaches are caused by human error according to the World Economic Forum.",
+                    "The first ransomware attack occurred in 1989 with the AIDS Trojan, which was distributed via floppy disks.",
+                    "The password '123456' still remains the most commonly used password worldwide despite decades of security awareness training.",
+                    "Ethical hackers can earn over $500,000 annually by finding critical vulnerabilities through bug bounty programs."
+                ];
+                
+                document.getElementById('fact-content').textContent = facts[Math.floor(Math.random() * facts.length)];
+                
+                // Show commands container
+                commandsContainer.style.display = 'block';
+                commandsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Resource display functions
+        function showResource(resourceType) {
+            const resourceContent = {
+                tools: {
+                    title: "Essential Cybersecurity Tools",
+                    content: `
+                        <div class="concept-box">
+                            <h3><i class="fas fa-tools"></i> Penetration Testing Distributions</h3>
+                            <p>These specialized Linux distributions come pre-loaded with hundreds of security tools:</p>
+                            <ul>
+                                <li><strong>Kali Linux</strong> - The industry standard for penetration testing with over 600 pre-installed tools</li>
+                                <li><strong>Parrot Security OS</strong> - A lightweight alternative with focus on privacy and development tools</li>
+                                <li><strong>BlackArch Linux</strong> - Contains over 2300 security tools, more than any other security distribution</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-bug"></i> Vulnerability Assessment Tools</h3>
+                            <p>These tools help identify security weaknesses in systems and applications:</p>
+                            <ul>
+                                <li><strong>Nessus</strong> - Commercial vulnerability scanner with extensive plugin database</li>
+                                <li><strong>OpenVAS</strong> - Open-source vulnerability scanner and manager</li>
+                                <li><strong>Nexpose</strong> - Vulnerability management solution from Rapid7</li>
+                                <li><strong>Qualys</strong> - Cloud-based vulnerability management platform</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-globe"></i> Web Application Security Tools</h3>
+                            <p>Specialized tools for testing web application security:</p>
+                            <ul>
+                                <li><strong>Burp Suite</strong> - Integrated platform for web application security testing</li>
+                                <li><strong>OWASP ZAP</strong> - Free, open-source web app scanner</li>
+                                <li><strong>Nikto</strong> - Web server scanner that performs comprehensive tests</li>
+                                <li><strong>SQLmap</strong> - Automated SQL injection and database takeover tool</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-network-wired"></i> Network Analysis Tools</h3>
+                            <p>Tools for analyzing network traffic and identifying vulnerabilities:</p>
+                            <ul>
+                                <li><strong>Wireshark</strong> - The world's foremost network protocol analyzer</li>
+                                <li><strong>Tcpdump</strong> - Command-line packet analyzer</li>
+                                <li><strong>Nmap</strong> - Network discovery and security auditing tool</li>
+                                <li><strong>Bettercap</strong> - Swiss army knife for network attacks and monitoring</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                paths: {
+                    title: "Cybersecurity Certification Pathways",
+                    content: `
+                        <div class="concept-box">
+                            <h3><i class="fas fa-user-shield"></i> Entry-Level Certifications</h3>
+                            <p>Ideal starting points for those new to cybersecurity:</p>
+                            <ul>
+                                <li><strong>CompTIA Security+</strong> - Covers network security, compliance, threats, and vulnerabilities</li>
+                                <li><strong>Certified Ethical Hacker (CEH)</strong> - Focuses on ethical hacking methodologies and tools</li>
+                                <li><strong>GIAC Security Essentials (GSEC)</strong> - Demonstrates understanding of information security beyond simple terminology</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-user-ninja"></i> Intermediate Certifications</h3>
+                            <p>For professionals with some experience looking to specialize:</p>
+                            <ul>
+                                <li><strong>Offensive Security Certified Professional (OSCP)</strong> - Hands-on penetration testing certification</li>
+                                <li><strong>CompTIA PenTest+</strong> - Focuses on penetration testing and vulnerability assessment</li>
+                                <li><strong>Certified Information Systems Auditor (CISA)</strong> - For IT audit, control, and security professionals</li>
+                                <li><strong>Certified Information Security Manager (CISM)</strong> - Management-focused security certification</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-user-graduate"></i> Advanced Certifications</h3>
+                            <p>For seasoned professionals seeking to demonstrate expertise:</p>
+                            <ul>
+                                <li><strong>Certified Information Systems Security Professional (CISSP)</strong> - Gold standard for security professionals</li>
+                                <li><strong>Offensive Security Certified Expert (OSCE)</strong> - Advanced exploitation techniques and custom exploits</li>
+                                <li><strong>GIAC Security Expert (GSE)</strong> - Elite certification requiring multiple GIAC certifications and a hands-on lab</li>
+                                <li><strong>Certified Ethical Hacker Master</strong> - Advanced version of CEH with practical lab components</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-route"></i> Recommended Learning Paths</h3>
+                            <p>Suggested progression based on career goals:</p>
+                            <ul>
+                                <li><strong>Penetration Tester Path:</strong> Security+ → CEH → PenTest+ → OSCP → OSCE</li>
+                                <li><strong>Security Analyst Path:</strong> Security+ → CySA+ → GIAC Certified Intrusion Analyst (GCIA) → CISSP</li>
+                                <li><strong>Security Management Path:</strong> Security+ → CISM → CISSP → CISO certifications</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                intel: {
+                    title: "Cybersecurity Threat Intelligence Resources",
+                    content: `
+                        <div class="concept-box">
+                            <h3><i class="fas fa-database"></i> Vulnerability Databases</h3>
+                            <p>Comprehensive collections of known security vulnerabilities:</p>
+                            <ul>
+                                <li><strong>Common Vulnerabilities and Exposures (CVE)</strong> - Standard for information security vulnerability names</li>
+                                <li><strong>National Vulnerability Database (NVD)</strong> - U.S. government repository of vulnerability management data</li>
+                                <li><strong>Exploit Database</strong> - Archive of exploits and vulnerable software</li>
+                                <li><strong>VulnDB</strong> - Comprehensive vulnerability intelligence database</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-chess"></i> Threat Intelligence Frameworks</h3>
+                            <p>Structured approaches to understanding and categorizing threats:</p>
+                            <ul>
+                                <li><strong>MITRE ATT&CK</strong> - Globally-accessible knowledge base of adversary tactics and techniques</li>
+                                <li><strong>Cyber Kill Chain</strong> - Model for identification and prevention of cyber intrusions</li>
+                                <li><strong>Diamond Model of Intrusion Analysis</strong> - Framework for analyzing cyber incidents</li>
+                                <li><strong>STIX/TAXII</strong> - Standards for exchange of cyber threat information</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-rss"></i> Threat Intelligence Feeds</h3>
+                            <p>Sources of up-to-date information about emerging threats:</p>
+                            <ul>
+                                <li><strong>AlienVault OTX</strong> - Open Threat Exchange with community-powered threat data</li>
+                                <li><strong>IBM X-Force Exchange</strong> - Threat intelligence sharing platform</li>
+                                <li><strong>SANS Internet Storm Center</strong> - Cooperative cyber threat monitoring system</li>
+                                <li><strong>VirusTotal</strong> - Analyzes suspicious files and URLs for malware</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="concept-box">
+                            <h3><i class="fas fa-newspaper"></i> Security News and Research</h3>
+                            <p>Stay informed with the latest cybersecurity developments:</p>
+                            <ul>
+                                <li><strong>Krebs on Security</strong> - In-depth security news and investigation</li>
+                                <li><strong>The Hacker News</strong> - Cybersecurity news and analysis</li>
+                                <li><strong>Threatpost</strong> - Independent news site focused on IT security</li>
+                                <li><strong>Dark Reading</strong> - Comprehensive news, analysis, and research on cybersecurity</li>
+                            </ul>
+                        </div>
+                    `
+                }
+            };
+            
+            // Create and show resource content
+            const commandsContainer = document.getElementById('commands-container');
+            const commandsTitle = document.getElementById('commands-title');
+            const commandsContent = document.getElementById('commands-content');
+            
+            // Clear previous content
+            commandsContent.innerHTML = '';
+            
+            // Set title
+            commandsTitle.textContent = resourceContent[resourceType].title;
+            
+            // Set content
+            commandsContent.innerHTML = resourceContent[resourceType].content;
+            
+            // Show container
+            commandsContainer.style.display = 'block';
+            commandsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Theme switching
+        const themes = ['dark-theme', 'hacker-theme', 'mrrobot-theme', 'matrix-theme', 'tron-theme', 'bladerunner-theme'];
+        let currentThemeIndex = 0;
+        
+        function toggleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            document.body.className = themes[currentThemeIndex];
+        }
+        
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Document ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lab buttons event listeners
+            const labButtons = document.querySelectorAll('.lab-btn[data-pdf]');
+            labButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pdfFile = this.getAttribute('data-pdf');
+                    const labTitle = this.closest('.lab-card').querySelector('.lab-title').textContent;
+                    openPdfViewer(labTitle, pdfFile);
+                });
+            });
+            
+            // Command buttons event listeners
+            const commandButtons = document.querySelectorAll('.lab-btn[data-commands]');
+            commandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const labNumber = this.getAttribute('data-commands');
+                    showCommands(labNumber);
+                });
+            });
+            
+            // Copy command buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('copy-btn') || e.target.parentElement.classList.contains('copy-btn')) {
+                    const button = e.target.classList.contains('copy-btn') ? e.target : e.target.parentElement;
+                    const command = button.getAttribute('data-command');
+                    
+                    navigator.clipboard.writeText(command).then(() => {
+                        button.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                    });
+                }
+            });
+            
+            // PDF viewer controls
+            document.getElementById('prev-page').addEventListener('click', function() {
+                const currentPage = parseInt(document.getElementById('current-page').value);
+                if (currentPage > 1) {
+                    document.getElementById('current-page').value = currentPage - 1;
+                }
+            });
+            
+            document.getElementById('next-page').addEventListener('click', function() {
+                const currentPage = parseInt(document.getElementById('current-page').value);
+                const totalPages = parseInt(document.getElementById('total-pages').textContent);
+                if (currentPage < totalPages) {
+                    document.getElementById('current-page').value = currentPage + 1;
+                }
+            });
+            
+            document.getElementById('zoom-in').addEventListener('click', function() {
+                const iframe = document.getElementById('pdf-viewer-frame');
+                iframe.style.transform = 'scale(1.1)';
+                iframe.style.transformOrigin = 'center top';
+            });
+            
+            document.getElementById('zoom-out').addEventListener('click', function() {
+                const iframe = document.getElementById('pdf-viewer-frame');
+                iframe.style.transform = 'scale(1)';
+            });
+            
+            document.getElementById('download-pdf').addEventListener('click', function() {
+                const pdfFile = this.getAttribute('data-pdf');
+                const link = document.createElement('a');
+                link.href = pdfFile;
+                link.download = pdfFile;
+                link.click();
+            });
+            
+            // Resource buttons
+            const resourceButtons = document.querySelectorAll('.resource-btn');
+            resourceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const resourceType = this.getAttribute('data-resource');
+                    showResource(resourceType);
+                });
+            });
+            
+            // Close PDF viewer button
+            document.getElementById('close-pdf-btn').addEventListener('click', closePdfViewer);
+            
+            // Theme switcher button
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            
+            // Scroll to top button
+            document.getElementById('scroll-top-btn').addEventListener('click', scrollToTop);
+            
+            // Show/hide scroll to top button based on scroll position
+            window.addEventListener('scroll', function() {
+                const scrollBtn = document.getElementById('scroll-top-btn');
+                if (window.pageYOffset > 300) {
+                    scrollBtn.style.display = 'flex';
+                } else {
+                    scrollBtn.style.display = 'none';
+                }
+            });
+            
+            // Initialize with scroll button hidden
+            document.getElementById('scroll-top-btn').style.display = 'none';
+        });
+    </script>
+
+
+  
+<style>
+    /* Floating Chai Button Styles */
+   /* Floating Chai Button Styles */
+#chai-qr-button {
+position: fixed;
+bottom: 100px;
+right: 27px;
+width: 55px;
+height: 55px;
+background-color: #F1C40F;
+color: #333;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 24px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+z-index: 999;
+transition: all 0.3s ease;
+}
+
+#chai-qr-button:hover {
+transform: translateY(-5px);
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* QR Code Modal Styles */
+.qr-modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.7);
+z-index: 1000;
+justify-content: center;
+align-items: center;
+}
+
+.qr-modal-content {
+background-color: var(--background);
+padding: 2rem;
+border-radius: var(--radius);
+max-width: 400px;
+width: 90%;
+text-align: center;
+position: relative;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.qr-close {
+position: absolute;
+top: 15px;
+right: 20px;
+font-size: 28px;
+font-weight: bold;
+color: var(--text-light);
+cursor: pointer;
+}
+
+.qr-modal-content h3 {
+font-size: 1.75rem;
+margin-bottom: 1.5rem;
+color: var(--text);
+}
+
+.qr-code-container {
+margin: 1.5rem auto;
+padding: 1rem;
+background-color: white;
+border-radius: var(--radius);
+width: fit-content;
+}
+
+.qr-code-container img, .qr-code-container canvas {
+display: block;
+max-width: 100%;
+height: auto;
+}
+
+.qr-modal-content p {
+color: var(--text-light);
+margin-bottom: 0.5rem;
+}
+
+.qr-upi-id {
+font-weight: bold;
+color: var(--primary) !important;
+margin-top: 0.5rem;
+}
+  </style>
+ <div id="chai-qr-button">
+  <i class="fas fa-mug-hot"></i>
+</div>
+
+<!-- QR Code Modal -->
+<div id="qr-modal" class="qr-modal">
+  <div class="qr-modal-content">
+    <span class="qr-close">&times;</span>
+    <h3>Buy me a Chai</h3>
+    <div class="qr-code-container" id="qr-code-container">
+      <!-- QR code will be generated here -->
+    </div>
+    <p>Scan with any UPI app to support</p>
+    <p class="qr-upi-id">UPI ID: dthummar17@okaxis</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+// QR Code Modal Functionality
+const chaiButton = document.getElementById('chai-qr-button');
+const qrModal = document.getElementById('qr-modal');
+const closeButton = document.querySelector('.qr-close');
+
+// Generate QR code for UPI
+const qrCodeContainer = document.getElementById('qr-code-container');
+const upiString = "upi://pay?pa=dthummar17@okaxis&pn=Dharm%20Thummar&cu=INR";
+
+// Generate QR code when the DOM is loaded
+new QRCode(qrCodeContainer, {
+  text: upiString,
+  width: 300,
+  height: 300,
+  colorDark: "#000000",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.H
+});
+
+chaiButton.addEventListener('click', function() {
+  qrModal.style.display = 'flex';
+});
+
+closeButton.addEventListener('click', function() {
+  qrModal.style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+  if (event.target === qrModal) {
+    qrModal.style.display = 'none';
+  }
+});
+});
+  if (chaiButtonMain) {
+    chaiButtonMain.addEventListener('click', function() {
+      qrModal.style.display = 'flex';
+    });
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</body>
+</html>
