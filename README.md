@@ -1,2 +1,3 @@
-# ethical-hacking-labs
+# ethical-hacking-labs   [![LINK](https://img.shields.io/badge/Visit%20LABs-149414)](https://dharmthummar.github.io/ethical-hacking-labs/)
+
 Ethical Hacking Labs website serves as a resource for learning ethical hacking through hands-on tutorials. It hosts a series of practical assignments in PDF format, covering essential topics such as setting up a lab environment with Kali Linux, using network diagnostic tools, performing network scanning with Nmap, scripting for enumeration, executing SQL injection attacks, and exploring Windows privilege escalation. These tutorials are designed to provide step-by-step guidance, complete with code snippets and outputs, to help learners build practical skills in a controlled and ethical manner
